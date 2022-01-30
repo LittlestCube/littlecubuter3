@@ -15,6 +15,8 @@ CPU::CPU()
 	ssp = 0x2FFF;
 	usp = 0x2FFF;
 	
+	intReady = true;
+	
 	psr = 2;
 }
 
@@ -253,11 +255,11 @@ void CPU::cycle()
 		}
 	}
 	
-	if (mem.mem[Memory::KBSR] >> 15)
+	if (mem.mem[Memory::KBSR] >> 15 && intReady)
 	{
 		interrupt(0x80);
 		
-		mem.writeMem(Memory::KBSR, 0);
+		intReady = false;
 	}
 }
 

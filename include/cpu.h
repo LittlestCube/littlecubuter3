@@ -14,6 +14,8 @@ public:
 	u16 ssp;
 	u16 usp;
 	
+	bool intReady;
+	
 	union
 	{
 		struct

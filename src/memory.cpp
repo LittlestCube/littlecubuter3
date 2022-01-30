@@ -56,6 +56,18 @@ bool Memory::loadROM(const char* path)
 
 u16 Memory::readMem(u16 addr)
 {
+	switch (addr)
+	{
+		case KBDR:
+		{
+			mem[KBSR] = 0x0000;
+			
+			cpu.intReady = true;
+			
+			break;
+		}
+	}
+	
 	return mem[addr];
 }
 

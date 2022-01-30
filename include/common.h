@@ -15,4 +15,6 @@ extern u16 romPC;
 extern bool inOS;
 extern bool quit;
 
+extern char c;
+
 extern void getonech();

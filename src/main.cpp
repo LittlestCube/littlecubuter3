@@ -48,13 +48,18 @@ int main(int argc, char** argv)
 	}
 	
 	static struct termios revert;
+	static struct termios newt;
 	
 	tcgetattr(0, &revert);
+	newt = revert;
+	
+	newt.c_lflag &= ~ICANON;
+	newt.c_lflag &= ~ECHO;
+	tcsetattr(0, TCSANOW, &newt);
+	setbuf(stdin, NULL);
 	
 	while (!quit)
 	{
-		cin.sync();
-		
 		if (kbhit())
 		{
 			c = cin.get();
@@ -81,21 +86,7 @@ int main(int argc, char** argv)
 
 int kbhit()
 {
-	static const int STDIN = 0;
-	static bool initialized = false;
-	
-	if (!initialized)
-	{
-		// Use termios to turn off line buffering
-		termios term;
-		tcgetattr(STDIN, &term);
-		term.c_lflag &= ~ICANON;
-		tcsetattr(STDIN, TCSANOW, &term);
-		setbuf(stdin, NULL);
-		initialized = true;
-	}
-	
 	int bytesWaiting;
-	ioctl(STDIN, FIONREAD, &bytesWaiting);
+	ioctl(0, FIONREAD, &bytesWaiting);
 	return bytesWaiting;
 }
