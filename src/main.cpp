@@ -33,7 +33,7 @@ int main(int argc, char** argv)
 	
 	else
 	{
-		printf("usage: lc3 [rom path] [os path (optional)]\n");
+		printf("usage: lc3 [rom path]\n");
 		
 		return 1;
 	}
