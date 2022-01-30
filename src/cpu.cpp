@@ -24,20 +24,10 @@ void CPU::cycle()
 {
 	u16 instr = (u16) mem.readMem(pc);
 	
-	/*printf("N: %d  Z: %d  P: %d  R0: %04X  R1: %04X  DDR: %04X  PC: %04X  INSTR: %04X  (", n, z, p, r[0], r[1], mem.mem[0xFE06], pc, instr);
-	
-	for (int i = 0; i < 0x1FFFFF; i++)
-	{
-		printf("");
-		cout << flush;
-	}*/
-	
 	switch ((instr >> 12) & 0xF)
 	{
 		case 0b0001: // ADD
 		{
-			//cout << "ADD)" << endl;
-			
 			if ((instr >> 5) & 1)
 			{
 				dr = sr1 + signExtend(instr & 0x1F, 5);
@@ -56,8 +46,6 @@ void CPU::cycle()
 		
 		case 0b0101: // AND
 		{
-			//cout << "AND)" << endl;
-			
 			if ((instr >> 5) & 1)
 			{
 				dr = sr1 & signExtend(instr & 0x1F, 5);
@@ -76,8 +64,6 @@ void CPU::cycle()
 		
 		case 0b0000: // BR
 		{
-			//cout << "BR)" << endl;
-			
 			pc += 1;
 			
 			if (((instr >> 9) & 7) & ((n << 2) | (z << 1) | p))
@@ -90,8 +76,6 @@ void CPU::cycle()
 		
 		case 0b1100: // JMP or RET
 		{
-			//cout << "JMP or RET)" << endl;
-			
 			pc = sr1;
 			
 			break;
@@ -99,8 +83,6 @@ void CPU::cycle()
 		
 		case 0b0100: // JSR or JSRR
 		{
-			//cout << "JSR or JSRR)" << endl;
-			
 			pc += 1;
 			
 			r[7] = pc;
@@ -120,8 +102,6 @@ void CPU::cycle()
 		
 		case 0b0010: // LD
 		{
-			//cout << "LD)" << endl;
-			
 			pc += 1;
 			
 			dr = mem.readMem(pc + signExtend(instr & 0x1FF, 9));
@@ -133,8 +113,6 @@ void CPU::cycle()
 		
 		case 0b1010: // LDI
 		{
-			//cout << "LDI)" << endl;
-			
 			pc += 1;
 			
 			dr = mem.readMem(mem.readMem(pc + signExtend(instr & 0x1FF, 9)));
@@ -146,8 +124,6 @@ void CPU::cycle()
 		
 		case 0b0110: // LDR
 		{
-			//cout << "LDR)" << endl;
-			
 			pc += 1;
 			
 			dr = mem.readMem(sr1 + signExtend(instr & 0x3F, 6));
@@ -159,8 +135,6 @@ void CPU::cycle()
 		
 		case 0b1110: // LEA
 		{
-			//cout << "LEA)" << endl;
-			
 			pc += 1;
 			
 			dr = pc + signExtend(instr & 0x1FF, 9);
@@ -172,8 +146,6 @@ void CPU::cycle()
 		
 		case 0b1001: // NOT
 		{
-			//cout << "NOT)" << endl;
-			
 			pc += 1;
 			
 			dr = ~sr1;
@@ -183,8 +155,6 @@ void CPU::cycle()
 		
 		case 0b1000: // RTI
 		{
-			//cout << "RTI)" << endl;
-			
 			if (privilege) // if user privilege
 			{
 				exception(0);
@@ -203,8 +173,6 @@ void CPU::cycle()
 		
 		case 0b0011: // ST
 		{
-			//cout << "ST)" << endl;
-			
 			pc += 1;
 			
 			mem.writeMem(pc + signExtend(instr & 0x1FF, 9), dr);
@@ -214,8 +182,6 @@ void CPU::cycle()
 		
 		case 0b1011: // STI
 		{
-			//cout << "STI)" << endl;
-			
 			pc += 1;
 			
 			mem.writeMem(mem.readMem(pc + signExtend(instr & 0x1FF, 9)), dr);
@@ -225,8 +191,6 @@ void CPU::cycle()
 		
 		case 0b0111: // STR
 		{
-			//cout << "STR)" << endl;
-			
 			pc += 1;
 			
 			mem.writeMem(((instr >> 6) & 7) + signExtend(instr & 0x3F, 6), dr);
@@ -236,8 +200,6 @@ void CPU::cycle()
 		
 		case 0b1111: // TRAP
 		{
-			//cout << "TRAP)" << endl;
-			
 			pc += 1;
 			
 			r[7] = pc;

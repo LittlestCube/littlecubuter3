@@ -28,7 +28,7 @@ bool Memory::loadROM(const char* path)
 	
 	if (!romfile.good())
 	{
-		cout << "ROM not found at path " << path << "!" << endl;
+		cout << endl << "ROM not found at path " << path << endl;
 		
 		return false;
 	}

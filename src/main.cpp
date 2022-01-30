@@ -1,5 +1,3 @@
-#include <thread>
-
 #include <sys/ioctl.h>
 
 #include <termios.h>
@@ -45,6 +43,13 @@ int main(int argc, char** argv)
 		inOS = true;
 		
 		cpu.pc = 0x200;
+	}
+	
+	else
+	{
+		cout << endl;
+		
+		return 1;
 	}
 	
 	static struct termios revert;
